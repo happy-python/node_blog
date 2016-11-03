@@ -1,0 +1,41 @@
+extends layout
+
+block blog-header
+    h2.page-header
+        =category.title
+        | 分类下的所有
+        =total
+        | 篇文章
+block blog-posts
+    each post in posts
+        h2.blog-post-title
+            a(href="/posts/detail/" + post._id, target="_blank")
+                =post.title
+        p.blog-post-meta
+            | 时间:
+            =moment(post.created).format('YYYY-MM-DD')
+            | &nbsp;作者:
+            =post.author.name
+            | &nbsp;分类:
+            a(href="/posts/category/" + post.category.title, target="_blank")
+                =post.category.title
+            | &nbsp;评论:
+            =post.comments.length || 0
+            | &nbsp;赞:
+            =post.meta.favs || 0
+        p
+            =truncate(post.content, 200)
+
+block pagination
+    nav
+        ul.pager
+            li
+                - var pre = pageNum - 1
+                if pre <= 0
+                    - pre = 1
+                a(href='/posts/category/' + category.title + '?page='+ pre) Previous
+            li
+                - var next = pageNum + 1
+                if next > pageCount
+                    - next = pageCount
+                a(href='/posts/category/' + category.title + '?page=' + next) Next

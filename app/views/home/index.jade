@@ -1,0 +1,42 @@
+extends layout
+
+block blog-header
+    h1.blog-title 全栈博客系统
+block blog-posts
+    each post in posts
+        h2.blog-post-title
+            a(href="/posts/detail/" + post.slug, target="_blank")
+                =post.title
+        p.blog-post-meta
+            | 时间:
+            =moment(post.created).format('YYYY-MM-DD')
+            | &nbsp;作者:
+            =post.author.name
+            | &nbsp;分类:
+            a(href="/posts/category/" + post.category.title, target="_blank")
+                =post.category.title
+            | &nbsp;评论:
+            =post.comments.length || 0
+            a(href="/posts/favs/" + post.slug)
+                | &nbsp;赞:
+                =post.meta.favs || 0
+        p
+            =truncate(post.content, 200)
+
+
+block pagination
+    if posts && posts.length > 0
+        nav
+            ul.pager
+                li
+                    - var pre = pageNum - 1
+                    if pre <= 0
+                        - pre = 1
+                    a(href='/?page='+ pre) Previous
+                li
+                    - var next = pageNum + 1
+                    if next > pageCount
+                        - next = pageCount
+                    a(href='/?page=' + next) Next
+    else
+        p 暂无结果

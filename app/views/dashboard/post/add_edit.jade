@@ -1,0 +1,25 @@
+extends ../layout
+
+block content
+    h2.page-header=pageHeader
+    if errors
+        each error in errors
+            .alert.alert-danger.alert-dismissible(role='alert')
+                button.close(type='button', data-dismiss='alert')
+                    span(aria-hidden='true') ×
+                    span.sr-only Close
+                strong=error.msg
+    form.vertical-form(method="post", action=action)
+        div.form-group
+            label 标题
+            input.form-control(name="title", placeholder="请输入标题...", required='', value=post.title)
+        div.form-group
+            label 分类
+            select.form-control(name="category")
+                option(value="", selected) - 选择分类 -
+                each category in categories
+                    option(value=category._id)= category.title
+        div.form-group
+            label 内容
+            textarea.form-control(name="content")=post.content
+        button.btn.btn-primary(type="submit")=btName

@@ -1,0 +1,19 @@
+extends ../layout
+
+block content
+    h2.page-header=pageHeader
+    if errors
+        each error in errors
+            .alert.alert-danger.alert-dismissible(role='alert')
+                button.close(type='button', data-dismiss='alert')
+                    span(aria-hidden='true') ×
+                    span.sr-only Close
+                strong=error.msg
+    form.vertical-form(method="post", action=action)
+        div.form-group
+            label 名称
+            input.form-control(name="title", placeholder="请输入名称...", required='', value=category.title)
+        div.form-group
+            label 别名
+            input.form-control(name="slug_name", placeholder="请输入别名...", value=category.slug)
+        button.btn.btn-info(type="submit")=btName

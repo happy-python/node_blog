@@ -1,0 +1,53 @@
+extends ../layout
+
+append css
+    link(rel='stylesheet', href='/css/dashboard.css')
+
+block main
+    nav.navbar.navbar-inverse.navbar-fixed-top(role='navigation')
+        .container-fluid
+            .navbar-header
+                button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#navbar', aria-expanded='false', aria-controls='navbar')
+                    span.sr-only Toggle navigation
+                    span.icon-bar
+                    span.icon-bar
+                    span.icon-bar
+                a.navbar-brand 博客后台管理系统
+            #navbar.navbar-collapse.collapse
+                ul.nav.navbar-nav.navbar-right
+                    if user
+                        li
+                            a=user.email
+                        li
+                            a(href='/auth/logout')
+                                i.fa.fa-unlock &nbsp;注销
+                    li
+                        a(href='#')
+                            i.fa.fa-question &nbsp;帮助
+    .container-fluid
+        .row
+            .col-sm-3.col-md-2.sidebar
+                ul.nav.nav-sidebar
+                    li(class={active: path === "/dashboard"})
+                        a(href='/dashboard')
+                            i.fa.fa-files-o &nbsp;文章列表
+                    li(class={active: path === "/dashboard/posts/add"})
+                        a(href='/dashboard/posts/add')
+                            i.fa.fa-file-o &nbsp;添加文章
+                    li(class={active: path === "/dashboard/categories"})
+                        a(href='/dashboard/categories')
+                            i.fa.fa-th-list &nbsp;分类列表
+                    li(class={active: path === "/dashboard/categories/add"})
+                        a(href='/dashboard/categories/add')
+                            i.fa.fa-plus &nbsp;添加分类
+                ul.nav.nav-sidebar
+                    li(class={active: path === "/dashboard/password"})
+                        a(href='/dashboard/password')
+                            i.fa.fa-lock &nbsp;修改密码
+            .col-sm-9.col-sm-offset-3.col-md-10.col-md-offset-2.main
+                != messages('my_message_template', locals)
+                block content
+block scripts
+    script(src='/components/querystring/querystring.min.js')
+    script(src='/js/ckeditor/ckeditor.js')
+    script(src='/js/dashboard.js')

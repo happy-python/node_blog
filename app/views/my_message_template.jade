@@ -1,0 +1,28 @@
+// 消息提示2秒消失
+body(onload='setTimeout("disappear.style.display=\'none\'", 2000)')
+    .messages
+        each type in Object.keys(messages)
+            if type === 'info'
+                each message in messages[type]
+                    #disappear.alert.alert-info.alert-dismissible(role='alert', style='text-align:center')
+                        button.close(type='button', data-dismiss='alert')
+                            span(aria-hidden='true') ×
+                            span.sr-only Close
+                        strong
+                            =message
+            else if type === 'success'
+                each message in messages[type]
+                    #disappear.alert.alert-success.alert-dismissible(role='alert', style='text-align:center')
+                        button.close(type='button', data-dismiss='alert')
+                            span(aria-hidden='true') ×
+                            span.sr-only Close
+                        strong
+                            =message
+            else if type === 'error'
+                each message in messages[type]
+                    #disappear.alert.alert-danger.alert-dismissible(role='alert', style='text-align:center')
+                        button.close(type='button', data-dismiss='alert')
+                            span(aria-hidden='true') ×
+                            span.sr-only Close
+                        strong
+                            =message

@@ -1,0 +1,60 @@
+extends ../layout
+
+append css
+    link(rel='stylesheet', href='/css/home.css')
+
+block main
+    .blog-masthead
+        .container
+            nav.blog-nav#top
+                a.blog-nav-item(href='/', class={active: path === "/"}) 首页
+                a.blog-nav-item(href='/contact', class={active: path === "/contact"}) 联系
+                a.blog-nav-item(href='/about', class={active: path === "/about"}) 关于
+                a.blog-nav-item.navbar-right(href='/auth/login') 登陆
+                a.blog-nav-item.navbar-right(href='/auth/regist') 注册
+                form.navbar-form.navbar-right(method='GET', action='/')
+                    .form-group
+                        input.form-control(type='text', name='keyword', value=keyword, placeholder='Search')
+
+    block info
+    .container
+        .blog-header
+            block blog-header
+        .row
+            .col-sm-8.blog-main
+                .blog-post
+                    block blog-posts
+                block pagination
+            .col-sm-3.col-sm-offset-1.blog-sidebar
+                .sidebar-module.sidebar-module-inset
+                    h4 关于
+                    p
+                        | 这是一个使用 NodeJS 搭建的全栈博客系统
+                    p
+                        | 技术栈：
+                        ul
+                            li Express MVC 框架
+                            li Jade 模板引擎
+                            li Mongoose ORM 库
+                            li MongoDB 数据库
+                            li Bootstrap 前端模板
+                .sidebar-module
+                    h4 文章分类
+                    ol.list-unstyled
+                        each category in categories
+                            li
+                                a(href="/posts/category/" + category.title)=category.title
+                .sidebar-module
+                    h4 友情链接
+                    ol.list-unstyled
+                        li
+                            a(href='#') GitHub
+                        li
+                            a(href='#') Twitter
+                        li
+                            a(href='#') Facebook
+    .blog-footer
+        p
+            | Blog template built for Bootstrap
+        p
+            a(href='#top') 回到顶部

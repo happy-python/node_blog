@@ -1,0 +1,15 @@
+extends ../layout
+
+append css
+    link(rel='stylesheet', href='/css/auth.css')
+
+block main
+    != messages('my_message_template', locals)
+    if errors
+        each error in errors
+            .alert.alert-danger.alert-dismissible(role='alert', style='text-align:center')
+                button.close(type='button', data-dismiss='alert')
+                    span(aria-hidden='true') ×
+                    span.sr-only Close
+                strong=error.msg
+    block content

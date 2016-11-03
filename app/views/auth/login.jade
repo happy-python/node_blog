@@ -1,0 +1,10 @@
+extends layout
+
+block content
+    .container
+        form.form-signin(method='POST', action='/auth/login')
+            h2.form-signin-heading 登录
+                a.login-regist(href='/auth/regist') &nbsp;&nbsp;注册
+            input.form-control(name='email', type='email', placeholder='邮箱', required='', autofocus='')
+            input.form-control(name='password', type='password', placeholder='密码', required='')
+            button.btn.btn-lg.btn-primary.btn-block.top(type='submit') 登录

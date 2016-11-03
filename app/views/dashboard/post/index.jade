@@ -1,0 +1,164 @@
+extends ../layout
+
+block content
+    h2.page-header 文章列表
+    form.form-inline.form-filter
+        .form-group
+            label 分类:
+            select#category.form-control
+                option(value="", selected=(filter.category === "")) - 选择分类 -
+                each category in categories
+                    option(value=category._id, selected=(category._id.toString() === filter.category))
+                        =category.title
+            | &nbsp;&nbsp;
+        .form-group
+            label 作者:
+            select#author.form-control
+                option(value="", selected=(filter.author === "")) - 选择作者 -
+                each author in authors
+                    option(value=author._id, selected=(author._id.toString() === filter.author))
+                        =author.name
+            | &nbsp;&nbsp;
+        .form-group
+            label 关键词:
+            input#keyword.form-control(type="text", value=filter.keyword)
+            | &nbsp;&nbsp;
+        a#filter-submit.btn.btn-primary 筛选
+    br
+    table.table.table-bordered
+        thead
+            tr
+                th(width="30%")
+                    if sortby === 'title'
+                        if sortturn === 'desc'
+                            - var url = "/dashboard?page=" + pageNum + "&sortby=title&sortturn=asc"
+                            if filter.category
+                                - url += '&category=' + filter.category
+                            if filter.author
+                                - url += '&author=' + filter.author
+                            a(href=url)
+                                | 标题&nbsp;
+                                .fa.fa-arrow-down
+                        else
+                            - var url = "/dashboard?page=" + pageNum + "&sortby=title&sortturn=desc"
+                            if filter.category
+                                - url += '&category=' + filter.category
+                            if filter.author
+                                - url += '&author=' + filter.author
+                            a(href=url)
+                                | 标题&nbsp;
+                                .fa.fa-arrow-up
+                    else
+                        - var url = "/dashboard?page=" + pageNum + "&sortby=title&sortturn=desc"
+                        if filter.category
+                            - url += '&category=' + filter.category
+                        if filter.author
+                            - url += '&author=' + filter.author
+                        a(href=url) 标题
+                th(width="10%") 分类
+                th 作者
+                th
+                    if sortby === 'created'
+                        if sortturn === 'desc'
+                            - var url = "/dashboard?page=" + pageNum + "&sortby=created&sortturn=asc"
+                            if filter.category
+                                - url += '&category=' + filter.category
+                            if filter.author
+                                - url += '&author=' + filter.author
+                            a(href=url)
+                                | 添加时间&nbsp;
+                                .fa.fa-arrow-down
+                        else
+                            - var url = "/dashboard?page=" + pageNum + "&sortby=created&sortturn=desc"
+                            if filter.category
+                                - url += '&category=' + filter.category
+                            if filter.author
+                                - url += '&author=' + filter.author
+                            a(href=url)
+                                | 添加时间&nbsp;
+                                .fa.fa-arrow-up
+                    else
+                        - var url = "/dashboard?page=" + pageNum + "&sortby=created&sortturn=desc"
+                        if filter.category
+                            - url += '&category=' + filter.category
+                        if filter.author
+                            - url += '&author=' + filter.author
+                        a(href=url) 添加时间
+                th 被赞
+                th 评论
+                th
+                    if sortby === 'published'
+                        if sortturn === 'desc'
+                            - var url = "/dashboard?page=" + pageNum + "&sortby=published&sortturn=asc"
+                            if filter.category
+                                - url += '&category=' + filter.category
+                            if filter.author
+                                - url += '&author=' + filter.author
+                            a(href=url)
+                                | 状态&nbsp;
+                                .fa.fa-arrow-down
+                        else
+                            - var url = "/dashboard?page=" + pageNum + "&sortby=published&sortturn=desc"
+                            if filter.category
+                                - url += '&category=' + filter.category
+                            if filter.author
+                                - url += '&author=' + filter.author
+                            a(href=url)
+                                | 状态&nbsp;
+                                .fa.fa-arrow-up
+                    else
+                        - var url = "/dashboard?page=" + pageNum + "&sortby=published&sortturn=desc"
+                        if filter.category
+                            - url += '&category=' + filter.category
+                        if filter.author
+                            - url += '&author=' + filter.author
+                        a(href=url) 状态
+                th(width="18%") 管理
+        tbody
+        each post in posts
+            tr
+                td
+                    a(href="/posts/detail/" + post.slug, target="_blank")
+                        =post.title
+                td
+                    =post.category.title
+                td
+                    =post.author.name
+                td
+                    =moment(post.created).format('YYYY-MM-DD HH:mm:ss')
+                td
+                    =post.meta.favs || 0
+                td
+                    =post.comments.length || 0
+                td
+                    =post.published ? '已发布' : '待发布'
+                td
+                    a(href="/posts/detail/" + post.slug, class="btn btn-sm btn-success", target="_blank") 查看
+                    | &nbsp;&nbsp;
+                    a(href="/dashboard/posts/edit/" + post.slug, class="btn btn-sm btn-info") 编辑
+                    | &nbsp;&nbsp;
+                    a(href="/dashboard/posts/delete/" + post.slug, class="btn btn-sm btn-danger") 删除
+    nav
+        ul.pager
+            li
+                - var pre = pageNum - 1
+                if pre > 0
+                    - var url = '/dashboard?page=' + pre + '&sortby=' + sortby + '&sortturn=' + sortturn
+                    if filter.category
+                        - url += '&category=' + filter.category
+                    if filter.author
+                        - url += '&author=' + filter.author
+                    a(href=url) 上一页
+            li.mypagination.active
+                | 当前第#{pageNum}页
+            li.mypagination
+                | 共#{pageCount}页
+            li
+                - var next = pageNum + 1
+                if next <= pageCount
+                    - var url = '/dashboard?page=' + next + '&sortby=' + sortby + '&sortturn=' + sortturn
+                    if filter.category
+                        - url += '&category=' + filter.category
+                    if filter.author
+                        - url += '&author=' + filter.author
+                    a(href=url) 下一页
